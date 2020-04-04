@@ -1,0 +1,27 @@
+$absolut-spacing: 25px;
+$grid-spacing-xl: 160px;
+$grid-spacing-md: 100px;
+$grid-spacing-sm: 60px;
+$max-width: 1200px;
+
+@mixin grid-space{
+    padding-top: $grid-spacing-md;
+    padding-bottom: $grid-spacing-md;
+    box-sizing: border-box;
+    @media #{$break-sm}{
+        padding-top: $grid-spacing-sm;
+        padding-bottom: $grid-spacing-sm;   
+    }
+}
+
+@mixin grid-width{
+    width: 100%;
+    max-width: $max-width;
+    padding: 0px 50px;
+    box-sizing: border-box;
+    margin: 0px auto;
+
+    @media #{$break-sm}{
+        padding: 0px 25px;
+    }
+}
