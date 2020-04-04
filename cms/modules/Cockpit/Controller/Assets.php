@@ -19,6 +19,8 @@ class Assets extends \Cockpit\AuthController {
 
     public function listAssets() {
 
+        \session_write_close();
+
         $options = [
             'sort' => ['created' => -1]
         ];
@@ -32,10 +34,12 @@ class Assets extends \Cockpit\AuthController {
         $ret = $this->module('cockpit')->listAssets($options);
 
         // virtual folders
-        $ret['folders'] = $this->app->storage->find('cockpit/assets_folders', [
+        $options = [
             'filter' => ['_p' => $this->param('folder', '')],
             'sort' => ['name' => 1]
-        ])->toArray();
+        ];
+        $this->app->trigger('cockpit.assetsfolders.find.before', [&$options]);
+        $ret['folders'] = $this->app->storage->find('cockpit/assets_folders', $options)->toArray();
 
         return $ret;
     }
@@ -46,6 +50,8 @@ class Assets extends \Cockpit\AuthController {
     }
 
     public function upload() {
+
+        \session_write_close();
 
         $meta = ['folder' => $this->param('folder', '')];
 
@@ -77,9 +83,12 @@ class Assets extends \Cockpit\AuthController {
 
         if (!$name) return;
 
+        $user = $this->module('cockpit')->getUser();
+
         $folder = [
             'name' => $name,
-            '_p' => $parent
+            '_p' => $parent,
+            '_by' => $user['_id'],
         ];
 
         $this->app->storage->save('cockpit/assets_folders', $folder);

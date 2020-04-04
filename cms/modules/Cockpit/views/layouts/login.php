@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ $app('i18n')->locale }}" class="uk-height-1-1" data-base="@base('/')" data-route="@route('/')" data-locale="{{ $app('i18n')->locale }}">
+<html lang="{{ $app('i18n')->locale }}" class="uk-height-1-1 app-page-login" data-base="@base('/')" data-route="@route('/')" data-locale="{{ $app('i18n')->locale }}">
 <head>
     <meta charset="UTF-8">
     <title>@lang('Authenticate Please!')</title>
@@ -9,7 +9,7 @@
     <style>
 
         .login-container {
-            width: 420px;
+            width: 480px;
             max-width: 90%;
         }
 
@@ -18,7 +18,7 @@
         }
 
         .login-image {
-            background-image: url(@url('assets:app/media/logo.svg'));
+            background-image: url(@url('assets:app/media/logo-plain.svg'));
             background-repeat: no-repeat;
             background-size: contain;
             background-position: 50% 50%;
@@ -48,10 +48,12 @@
 
             <div class="uk-panel-space uk-nbfc uk-text-center uk-animation-slide-bottom" if="{$user}">
 
-                <h1 class="uk-h2 uk-text-bold uk-text-truncate">@lang('Welcome back!')</h1>
-
                 <p>
                     <cp-gravatar email="{ $user.email }" size="80" alt="{ $user.name || $user.user }" if="{$user}"></cp-gravatar>
+                </p>
+                <hr class="uk-width-1-2 uk-container-center">
+                <p class="uk-text-center uk-text-bold uk-text-muted uk-text-upper uk-margin-top">
+                    @lang('Welcome back!')
                 </p>
 
             </div>
@@ -70,12 +72,14 @@
                 </div>
 
                 <div class="uk-form-row">
-                    <input ref="user" class="uk-form-large uk-width-1-1" type="text" aria-label="@lang('Username')" placeholder="@lang('Username')" autofocus required>
+                    <label class="uk-text-small uk-text-bold uk-text-upper uk-margin-small-bottom">@lang('Username')</label>
+                    <input ref="user" class="uk-form-large uk-width-1-1" type="text" aria-label="@lang('Username')" placeholder="" autofocus required>
                 </div>
 
                 <div class="uk-form-row">
                     <div class="uk-form-password uk-width-1-1">
-                        <input ref="password" class="uk-form-large uk-width-1-1" type="password" aria-label="@lang('Password')" placeholder="@lang('Password')" required>
+                        <label class="uk-text-small uk-text-bold uk-text-upper uk-margin-small-bottom">@lang('Password')</label>
+                        <input ref="password" class="uk-form-large uk-width-1-1" type="password" aria-label="@lang('Password')" placeholder="" required>
                         <a href="#" class="uk-form-password-toggle" data-uk-form-password>@lang('Show')</a>
                     </div>
                 </div>
@@ -98,6 +102,8 @@
             this.error = false;
             this.$user  = null;
 
+            var redirectTo = '{{ $redirectTo }}';
+
             submit(e) {
 
                 e.preventDefault();
@@ -114,7 +120,7 @@
                         this.$user = data.user;
 
                         setTimeout(function(){
-                            App.reroute('/');
+                            App.reroute(redirectTo);
                         }, 2000)
 
                     } else {

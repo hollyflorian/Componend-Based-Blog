@@ -1,27 +1,35 @@
 <div id="loginmodal" class="uk-modal" riot-view>
 
     <style>
-        .uk-modal-dialog { width: 360px; }
+        .uk-modal-login { 
+            max-width: 400px;
+            padding: 30px;
+        }
+
     </style>
 
-    <div class="uk-modal-dialog uk-form" ref="loginDialog">
+    <div class="uk-modal-dialog uk-modal-login uk-form" ref="loginDialog">
 
         <form class="uk-form" method="post" action="@route('/auth/check')" onsubmit="{ submit }">
 
-            <div class="uk-text-center">
-                <img src="@base('assets:app/media/icons/login.svg')" width="100" height="100">
+            <div class="uk-h2 uk-text-bold">
+                {{ $app->retrieve('app.name') }}
             </div>
 
-            <div class="uk-form-row uk-text-center uk-h2 uk-text-bold">
-                {{ $app['app.name'] }}
+            <div class="uk-form-row uk-h4 uk-text-muted uk-margin-top uk-text-small uk-text-upper">
+                @lang('Your session has expired.')
             </div>
 
-            <div class="uk-form-row uk-margin-large-top">
-                <input ref="user" class="uk-form-large uk-width-1-1" type="text" placeholder="@lang('Username')" required>
+            <hr>
+
+            <div class="uk-margin-top">
+                <label class="uk-text-small uk-text-bold uk-text-upper uk-margin-small-bottom">@lang('Username')</label>
+                <input ref="user" class="uk-form-large uk-form-blank uk-width-1-1" type="text" placeholder="..." required>
             </div>
 
-            <div class="uk-form-row">
-                <input ref="password" class="uk-form-large uk-width-1-1" type="password" placeholder="@lang('Password')" required>
+            <div>
+                <label class="uk-text-small uk-text-bold uk-text-upper uk-margin-small-bottom">@lang('Password')</label>
+                <input ref="password" class="uk-form-large uk-form-blank uk-width-1-1" type="password" placeholder="..." required>
             </div>
 
             <div class="uk-margin-top">
@@ -58,7 +66,7 @@
                 });
             }
 
-            setInterval(check, 60000);
+            setInterval(check, 30000);
 
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) check();

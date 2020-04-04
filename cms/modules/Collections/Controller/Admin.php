@@ -69,15 +69,21 @@ class Admin extends \Cockpit\AuthController {
             return $this->helper('admin')->denyRequest();
         }
 
-        $collection = [
+        $default = [
             'name' => '',
             'label' => '',
             'color' => '',
             'fields'=>[],
             'acl' => new \ArrayObject,
             'sortable' => false,
+            'sort' => [
+                'column' => '_created',
+                'dir' => -1,
+            ],
             'in_menu' => false
         ];
+
+        $collection = $default;
 
         if ($name) {
 
@@ -92,6 +98,8 @@ class Admin extends \Cockpit\AuthController {
             }
 
             $this->app->helper('admin')->lockResourceId($collection['_id']);
+
+            $collection = array_merge($default, $collection);
         }
 
         // get field templates
@@ -170,6 +178,10 @@ class Admin extends \Cockpit\AuthController {
 
         $collection = array_merge([
             'sortable' => false,
+            'sort' => [
+                'column' => '_created',
+                'dir' => -1,
+            ],
             'color' => '',
             'icon' => '',
             'description' => ''
@@ -219,6 +231,10 @@ class Admin extends \Cockpit\AuthController {
 
         $collection = array_merge([
             'sortable' => false,
+            'sort' => [
+                'column' => '_created',
+                'dir' => -1,
+            ],
             'color' => '',
             'icon' => '',
             'description' => ''
@@ -315,6 +331,8 @@ class Admin extends \Cockpit\AuthController {
 
     public function delete_entries($collection) {
 
+        \session_write_close();
+
         $collection = $this->module('collections')->collection($collection);
 
         if (!$collection) {
@@ -359,6 +377,8 @@ class Admin extends \Cockpit\AuthController {
 
     public function update_order($collection) {
 
+        \session_write_close();
+
         $collection = $this->module('collections')->collection($collection);
         $entries = $this->param('entries');
 
@@ -379,6 +399,8 @@ class Admin extends \Cockpit\AuthController {
 
     public function export($collection) {
 
+        \session_write_close();
+
         if (!$this->app->module("cockpit")->hasaccess('collections', 'manage')) {
             return false;
         }
@@ -398,6 +420,8 @@ class Admin extends \Cockpit\AuthController {
 
 
     public function tree() {
+
+        \session_write_close();
 
         $collection = $this->app->param('collection');
 

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Lime\Helper;
+namespace LimeExtra\Helper;
 
 /**
  * I18n class. Manage translations
@@ -543,7 +543,11 @@ class I18n extends \Lime\Helper {
      */
     public function initialize(){
 
-        $this->locale = $this->app->getClientLang();
+        $locale = $this->app->getClientLang();
+
+        if ($locale) {
+            $this->locale = $locale;
+        }
     }
 
     /**
