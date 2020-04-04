@@ -14,13 +14,13 @@
 @global-link-color: @global-primary-background;
 
 .uk-noselect {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -webkit-user-select: none !important;
+    user-select: none !important;
 }
 
 .uk-disabled {
+    -webkit-user-select: none;
+    user-select: none;
     pointer-events: none;
 }
 
@@ -93,9 +93,9 @@
 
 .app-logo {
     display: inline-block;
-    width: 30px;
-    height: 30px;
-    background-image: url(../media/logo.svg);
+    width: 35px;
+    height: 35px;
+    background-image: url(../media/logo-plain.svg);
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 10px;
@@ -147,7 +147,7 @@
     position: absolute;
     width: 100%;
     border-bottom: 3px @global-primary-background solid;
-    bottom: -20px;
+    bottom: -22px;
     left: 0;
 }
 
@@ -172,6 +172,14 @@ cp-actionbar {
 
 cp-fieldcontainer {
     display: block;
+}
+
+cp-field.uk-disabled {
+    opacity: .6;
+}
+
+cp-gravatar canvas {
+    border-radius: @global-border-radius;
 }
 
 @media (min-width:1220px) {
@@ -286,6 +294,10 @@ div.jsoneditor-tree {
 div.jsoneditor-menu>button,
 div.jsoneditor-menu>div.jsoneditor-modes>button {
     color: #000 !important;
+}
+
+.CodeMirror {
+    font-size: 13px;
 }
 
 .CodeMirror span.cm-comment { color: #a86; }

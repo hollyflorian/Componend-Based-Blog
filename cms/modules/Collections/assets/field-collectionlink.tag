@@ -23,7 +23,9 @@
             <div class="uk-panel uk-panel-card uk-panel-box">
 
                 <div class="uk-flex">
-                    <span class="uk-flex-item-1">{ getDisplay(link) }</span>
+                    <span class="uk-flex-item-1">
+                        { getDisplay(link) }
+                    </span>
                     <a class="uk-margin-small-left" href="{ App.route('/collections/entry/'+opts.link+'/'+link._id) }"><i class="uk-icon-link"></i></a>
                 </div>
 
@@ -77,6 +79,17 @@
 
                 </div>
 
+                <div class="uk-float-left uk-form-select uk-margin-small-left" if="{ languages.length }">
+                    <span class="uk-button uk-button-large uk-button-link {lang ? 'uk-text-primary' : 'uk-text-muted'}">
+                        <i class="uk-icon-globe"></i>
+                        { lang ? _.find(languages,{'code':lang}).label : App.$data.languageDefaultLabel }
+                    </span>
+                    <select onchange="{changelanguage}">
+                        <option value="" selected="{lang === ''}">{App.$data.languageDefaultLabel}</option>
+                        <option each="{language,idx in languages}" value="{language.code}" selected="{lang === language.code}">{language.label}</option>
+                    </select>
+                </div>
+
                 <div show="{selected.length}">
                     <button type="button" class="uk-button uk-button-large uk-button-link" onclick="{linkItems}">
                         <i class="uk-icon-link"></i> {selected.length} {App.i18n.get('Entries')}
@@ -91,7 +104,7 @@
                     { App.i18n.get('No entries found') }.
                 </div>
 
-                <table class="uk-table uk-table-tabbed uk-table-striped" if="{ entries.length }">
+                <table class="uk-table uk-table-tabbed uk-table-striped" if="{ modalOpen && entries.length }">
                     <thead>
                         <tr>
                             <th show="{opts.multiple}"></th>
@@ -139,7 +152,9 @@
 
     this.mixin(RiotBindMixin);
 
-    var $this = this, modal, collections, cache = {}, _init = function(){
+    window.__collectionLinkCache = window.__collectionLinkCache || {};
+
+    var $this = this, modal, cache = window.__collectionLinkCache, collections, _init = function(){
 
         this.error = this.collection ? false:true;
 
@@ -151,14 +166,21 @@
             return field.lst;
         });
 
+		if (this.collection && this.languages.length) {
+			this.lang = App.session.get('collections.entry.'+this.collection._id+'.lang', '');
+		}
+
         this.fields.push({name:'_modified', 'label':App.i18n.get('Modified')});
 
         this.update();
 
     }.bind(this);
 
+    this.modalOpen = false;
     this.link = null;
     this.sort = {'_created': -1};
+    this.languages  = App.$data.languages;
+    this.lang = null;
 
     this.selected = [];
 
@@ -168,7 +190,7 @@
             value = [].concat(value ? [value]:[]);
         }
 
-        if (JSON.stringify(this.reference) !== JSON.stringify(value)) {
+        if (JSON.stringify(this.link) !== JSON.stringify(value)) {
             this.link = value;
             this.update();
         }
@@ -205,6 +227,21 @@
                 $this.updateorder();
             });
         }
+
+        modal.element.on('show.uk.modal', function() {
+            if (!$this.modalOpen) {
+                $this.modalOpen = true;
+                $this.update();
+            }
+        })
+
+        modal.element.on('hide.uk.modal', function() {
+
+            if ($this.modalOpen) {
+                $this.modalOpen = false;
+                $this.update();
+            }
+        })
     });
     
     this.on('before-unmount', function() {
@@ -220,6 +257,7 @@
             return;
         }
 
+        $this.modalOpen = true;
         modal.show();
         modal.find(':checked').prop('checked', false);
 
@@ -249,7 +287,8 @@
             this.link = entry;
         }
         
-        cache[entry._id] = entry;
+        $this.cacheDisplay(_entry);
+        $this.modalOpen = false;
 
         setTimeout(function(){
             modal.hide();
@@ -275,7 +314,7 @@
         this.selected.forEach(function(_entry) {
             
             var defaultField = $this.collection.fields[0].name;
-            cache[_entry._id] = _entry;
+            $this.cacheDisplay(_entry);
             entry = {
                 _id: _entry._id,
                 link: $this.collection.name,
@@ -289,6 +328,7 @@
             modal.hide();
         }, 50);
 
+        $this.modalOpen = false;
         this.link = _.uniqBy(this.link, '_id');
         this.$setValue(this.link);
     }
@@ -303,11 +343,10 @@
         this.$setValue(this.link);
     }
 
-    load() {
+    load(replace=false) {
 
         var limit = 50;
-
-        var options = { sort:this.sort };
+        var options = { sort:this.sort, lang:this.lang };
 
         if (this.filter) {
             options.filter = this.filter;
@@ -319,14 +358,14 @@
 
         if (!this.collection.sortable) {
             options.limit = limit;
-            options.skip  = this.entries.length || 0;
+            options.skip  = replace ? 0 : this.entries.length;
         }
 
         this.loading = true;
 
         return App.request('/collections/find', {collection:this.collection.name, options:options}).then(function(data){
 
-            this.entries = this.entries.concat(data.entries);
+            this.entries = replace ? data.entries : this.entries.concat(data.entries);
 
             this.ready    = true;
             this.loadmore = data.entries.length && data.entries.length == limit;
@@ -352,7 +391,7 @@
 
             this.entries = [];
             this.loading = true;
-            this.load();
+            this.load(true);
         }
 
         return false;
@@ -419,39 +458,64 @@
     }
     
     getDisplay(link) {
-        
+
         var display = '...';
-        
-        if (!cache[link._id]) {
-            
-            cache[link._id] = App.request('/collections/find', {collection:this.collection.name, options:{filter:{_id:link._id}}}).then(function(data){
+        var cacheKey = link._id + ':' + this.lang;
+
+        if (!cache[cacheKey]) {
+
+            App.request('/collections/find', {collection:this.collection.name, options:{lang:this.lang, filter:{_id:link._id}, limit:1}}).then(function(data){
 
                 if (!data.entries.length) {
+                    cache[cacheKey] = 'n/a';
                     link.display = 'n/a';
                     this.update();
                     return;
                 }
-                
-                var _entry = data.entries[0], display = opts.display;
 
-                if (!display) {
-                    display = _entry.name ? 'name':'title';
-                    link.display = _entry[display] || 'n/a';
-                } else {
-                    link.display = _entry[display] || App.Utils.interpolate(display, _entry);
-                }
+                link.display = $this.cacheDisplay(data.entries[0]);
                 
                 this.update();
 
             }.bind(this))
+
+            cache[cacheKey] = '...';
             
         } else {
-            display = link.display
+            display = cache[cacheKey];
         }
         
         return display;
     }
 
+    changelanguage(e) {
+		var lang = e.target.value;
+		App.session.set('collections.entry.'+this.collection._id+'.lang', lang);
+		this.lang = lang;
+		this.load(true);
+		this.update();
+	}
+
+    cacheDisplay(item) {
+
+        var cacheKey = item._id + ':' + this.lang;
+        var display = opts.display, val;
+
+        if (!display) {
+            display = item.name ? 'name':'title';
+            val = item[display] || 'n/a';
+        } else if (Array.isArray(display)) {
+            val = display.map(function(field){
+                return item[field] || "";
+            }).join(', ');
+        } else {
+            val = item[display] || App.Utils.interpolate(display, item);
+        }
+
+        cache[cacheKey] = val;
+
+        return val;
+    }
 
     </script>
 
