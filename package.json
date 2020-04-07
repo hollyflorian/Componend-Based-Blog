@@ -1,13 +1,13 @@
 {
-  "dependencies": {
-    "handlebars": "^4.7.6",
-    "sass": "^1.26.3"
-  },
   "name": "hollycms",
   "version": "0.0.1",
   "description": "A Component Based Blog System powerded by the Cockpit CMS",
   "main": "index.php",
   "repository": "https://github.com/hollyflorian/Componend-Based-Blog.git",
   "author": "florianholly <florian.holly@towa.at>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "handlebars": "^4.7.6",
+    "sass": "^1.26.3"
+  }
 }
