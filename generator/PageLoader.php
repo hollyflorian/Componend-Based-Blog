@@ -29,7 +29,9 @@ fetch('/cms/api/collections/get/Page?token='+token)
         buildTemplate($BlogData[$fieldID]["value"]);
         if(this.responseText){
           $valid[$fieldID] = true;
-          validationCheck($BlogData.length);
+          if(validationCheck($BlogData.length)){
+            generateFilesAndFolder("<?php echo $pagename ?>","<?php $frontendFolder ?>");
+          }
         }
       } 
     };
@@ -47,8 +49,10 @@ fetch('/cms/api/collections/get/Page?token='+token)
       }
     }
 
-    if($validCheck == true){
-      console.log("es geht nice");
+    if($validCheck){
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -60,6 +64,18 @@ fetch('/cms/api/collections/get/Page?token='+token)
     var html = template(context);
     var destination = document.getElementById("output");
     destination.innerHTML += html;
+  }
+
+  function generateFilesAndFolder(pagename, frontendFolder){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("output").innerHTML += this.responseText;
+      }
+    };
+
+    xhttp.open("GET", "generator/GeneratePage.php?pagename="+pagename+"&frontendfolder="+frontendFolder, true);
+    xhttp.send();
   }
 
 </script>
