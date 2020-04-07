@@ -5,16 +5,18 @@
 ?>
 
 <script>
+var $valid = [];
+
 var token = 'e81f58444134a2a7e9570c2060ff64';
 fetch('/cms/api/collections/get/Page?token='+token)
   .then(res => res.json())
   .then(res => {
         $BlogData = res["entries"]["0"]["CustomFields"];
         for($fieldID in $BlogData){
+          $valid[$fieldID] = false;
           $customField = $BlogData[$fieldID]["field"]["name"];
           LoadComponents($fieldID, $BlogData, $customField);
         }
-        console.log("finish");
   }); 
 
   // Load Components
@@ -22,14 +24,32 @@ fetch('/cms/api/collections/get/Page?token='+token)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      console.log($BlogData[$fieldID]["value"]);
-      document.getElementById("input").innerHTML = this.responseText;
-      buildTemplate($BlogData[$fieldID]["value"]);
-      }
+        console.log($BlogData[$fieldID]["value"]);
+        document.getElementById("input").innerHTML = this.responseText;
+        buildTemplate($BlogData[$fieldID]["value"]);
+        if(this.responseText){
+          $valid[$fieldID] = true;
+          validationCheck($BlogData.length);
+        }
+      } 
     };
 
     xhttp.open("GET", "generator/LoadContent.php?customfield="+$customField, true);
     xhttp.send();
+  }
+  
+  function validationCheck($DataLength){
+    $validCheck = true;
+
+    for($i in $valid){
+      if($valid[$i] !== true){
+        $validCheck = false;
+      }
+    }
+
+    if($validCheck == true){
+      console.log("es geht nice");
+    }
   }
 
   function buildTemplate($BlogData){
