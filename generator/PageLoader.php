@@ -30,7 +30,7 @@ fetch('/cms/api/collections/get/Page?token='+token)
         if(this.responseText){
           $valid[$fieldID] = true;
           if(validationCheck($BlogData.length)){
-            generateFilesAndFolder("<?php echo $pagename ?>","<?php $frontendFolder ?>");
+            generateFilesAndFolder("<?php echo $pagename ?>","<?php echo $frontendFolder ?>");
           }
         }
       } 

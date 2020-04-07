@@ -1,6 +1,6 @@
 <?php
-    $pagename = "Home";
-    $frontendFolder = "frontend";
+    $pagename = $_GET["pagename"];
+    $frontendFolder = $_GET["frontendfolder"];
     echo "../".$frontendFolder."/".$pagename;
     mkdir("../".$frontendFolder."/".$pagename ,0777 ,TRUE); 
     $newFile = fopen("../".$frontendFolder."/".$pagename."/index.php", "w");
