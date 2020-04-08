@@ -1,3 +1,7 @@
 .Text{
+    position: relative;
     
+    &__wrapper{
+        @include grid-width;
+    }    
 }

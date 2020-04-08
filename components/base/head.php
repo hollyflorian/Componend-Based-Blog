@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A Component Based Blog System powerded by the Cockpit CMS">
     <meta name="author" content="Florian Holly">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="/dist/style/main.css">
     <title><?php echo $base_title ?></title>
   </head>

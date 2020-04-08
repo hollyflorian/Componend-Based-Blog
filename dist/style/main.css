@@ -73,9 +73,62 @@ html {
 
 body {
   overflow-x: hidden;
+  font-family: "Noto Sans", sans-serif;
   background-color: #0E0E0E;
+  color: #FFF;
   padding: 0px;
   margin: 0px;
+}
+
+.Text {
+  position: relative;
+}
+.Text__wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0px 50px;
+  box-sizing: border-box;
+  margin: 0px auto;
+}
+@media only screen and (min-width : 780px) {
+  .Text__wrapper {
+    padding: 0px 25px;
+  }
+}
+
+.Image {
+  position: relative;
+}
+.Image__wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0px 50px;
+  box-sizing: border-box;
+  margin: 0px auto;
+}
+@media only screen and (min-width : 780px) {
+  .Image__wrapper {
+    padding: 0px 25px;
+  }
+}
+.Image__wrapper img {
+  width: 100%;
+}
+
+.ImageAndText {
+  position: relative;
+}
+.ImageAndText__wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0px 50px;
+  box-sizing: border-box;
+  margin: 0px auto;
+}
+@media only screen and (min-width : 780px) {
+  .ImageAndText__wrapper {
+    padding: 0px 25px;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */
