@@ -1,6 +1,11 @@
 <section class="ImageAndText">
-    <div class="ImageAndText__wrapper">
-        <img src="{{ image.path }}" />
-        <div>{{ textarea }}</div>
+    <div class="ImageAndText__wrapper {{#if textforimage}}ImageAndText__wrapper--TextForImage{{/if }}">
+        <div class="ImageAndText__imageBox">
+            <img src="{{ image.path }}" />
+        </div>
+        <div class="ImageAndText__textBox">
+            <h2>{{ heading }}</h2>
+            <p>{{ textarea }}</p>
+        </div>
     </div>
 </section>
