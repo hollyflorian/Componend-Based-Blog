@@ -4,7 +4,4 @@
 
     // Base Component Head
     include 'components/base/head.php';
-
-    // LazyLoad js
-    include 'components/base/footer.php';
 ?>

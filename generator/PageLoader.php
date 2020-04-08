@@ -73,8 +73,8 @@ fetch('/cms/api/collections/get/Page?token='+token)
         document.getElementById("output").innerHTML += this.responseText;
       }
     };
-
-    xhttp.open("GET", "generator/GeneratePage.php?pagename="+pagename+"&frontendfolder="+frontendFolder, true);
+    $innerHTML = document.getElementById("output").innerHTML
+    xhttp.open("GET", "generator/GeneratePage.php?pagename="+pagename+"&frontendfolder="+frontendFolder+"&innerhtml="+$innerHTML, true);
     xhttp.send();
   }
 
@@ -88,5 +88,5 @@ fetch('/cms/api/collections/get/Page?token='+token)
 <hr/>
 
 <div id="output">
-
+  <?php include 'PageHead.php'; ?>
 </div>
