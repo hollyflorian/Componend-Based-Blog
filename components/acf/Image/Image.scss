@@ -1,3 +1,11 @@
 .Image{
-    
+    position: relative;
+
+        &__wrapper{
+            @include grid-width;
+
+            img{
+                width: 100%;
+            }
+        }
 }
