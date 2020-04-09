@@ -1,6 +1,7 @@
 .Image{
     position: relative;
-
+    @include grid-space;
+    
         &__wrapper{
             @include grid-width;
 

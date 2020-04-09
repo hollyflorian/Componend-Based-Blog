@@ -1,7 +1,7 @@
 <section class="ImageAndText">
     <div class="ImageAndText__wrapper {{#if textforimage}}ImageAndText__wrapper--TextForImage{{/if }}">
         <div class="ImageAndText__imageBox">
-            <img src="{{ image.path }}" />
+            <img src="{{ image.path }}" alt="{{ image.meta.title }}"/>
         </div>
         <div class="ImageAndText__textBox">
             <h2>{{ heading }}</h2>

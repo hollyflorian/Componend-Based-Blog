@@ -1,9 +1,16 @@
 .ImageAndText{
     position: relative;
+    @include grid-space;
     
     &__wrapper{
         @include grid-width;
         display: flex;
+        flex-direction: column;
+
+        @media #{$break-sm}{
+            flex-direction: row;
+        }
+
 
         &--TextForImage{
             flex-direction: row-reverse;
@@ -11,7 +18,11 @@
     }
 
     &__imageBox{
-        width: 50%;
+        width: 100%;
+
+        @media #{$break-sm}{
+            width: 50%;
+        }
 
         img{
             width: 100%;
@@ -19,12 +30,18 @@
     }
 
     &__textBox{
-        padding: 25px;
         box-sizing: border-box;
-        width: 50%;
+        width: 100%;
+        margin-top: 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+
+        @media #{$break-sm}{
+            padding: 25px;
+            width: 50%;
+            margin-top: 0px;
+        }
 
         h2{
             @include font-h3($white);
