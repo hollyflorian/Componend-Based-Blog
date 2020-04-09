@@ -88,5 +88,4 @@ fetch('/cms/api/collections/get/Page?token='+token)
 <hr/>
 
 <div id="output">
-  <?php include 'PageHead.php'; ?>
 </div>
