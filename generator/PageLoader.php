@@ -12,12 +12,26 @@ fetch('/cms/api/collections/get/Page?token='+token)
   .then(res => res.json())
   .then(res => {
         $BlogData = res["entries"]["0"]["CustomFields"];
-        for($fieldID in $BlogData){
-          $valid[$fieldID] = false;
-          $customField = $BlogData[$fieldID]["field"]["name"];
-          LoadComponents($fieldID, $BlogData, $customField);
-        }
+        LoadComponentsRow($BlogData);
   }); 
+
+  //Load Ajax
+  var $LoadedComponents = 0;
+  function LoadComponentsRow($BlogData){
+    if($BlogData.length > $LoadedComponents){
+      console.log($LoadedComponents);
+      $valid[$LoadedComponents] = false;
+      $customField = $BlogData[$LoadedComponents]["field"]["name"];
+
+      LoadComponents($LoadedComponents, $BlogData, $customField);
+      $LoadedComponents++;
+    }else{
+      if(validationCheck($BlogData.length)){
+        generateFilesAndFolder("<?php echo $pagename ?>","<?php echo $frontendFolder ?>");
+      }
+    }
+  }
+
 
   // Load Components
   function LoadComponents($fieldID, $BlogData, $customField){
@@ -29,9 +43,7 @@ fetch('/cms/api/collections/get/Page?token='+token)
         buildTemplate($BlogData[$fieldID]["value"]);
         if(this.responseText){
           $valid[$fieldID] = true;
-          if(validationCheck($BlogData.length)){
-            generateFilesAndFolder("<?php echo $pagename ?>","<?php echo $frontendFolder ?>");
-          }
+          LoadComponentsRow($BlogData);
         }
       } 
     };
