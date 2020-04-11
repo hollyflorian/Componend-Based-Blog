@@ -1,0 +1,33 @@
+.Hero{
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    img{
+        width: 100%;
+        position: absolute;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__wrapper{
+        @include grid-width;
+        position: relative;
+        z-index: 1;
+
+        h1{
+            @include font-h1($white);
+            margin-bottom: 15px;
+        }
+
+        p{
+            @include font-h4(rgba($white,0.8));
+        }
+    }
+
+    &__text{
+        width: 50%;
+    }
+}

@@ -1,27 +1,28 @@
 $absolut-spacing: 25px;
 $grid-spacing-xl: 160px;
 $grid-spacing-md: 100px;
-$grid-spacing-sm: 60px;
+$grid-spacing-sm: 50px;
 $max-width: 1200px;
 
 @mixin grid-space{
-    padding-top: $grid-spacing-md;
-    padding-bottom: $grid-spacing-md;
+    padding-top: $grid-spacing-sm;
+    padding-bottom: $grid-spacing-sm;  
     box-sizing: border-box;
+
     @media #{$break-sm}{
-        padding-top: $grid-spacing-sm;
-        padding-bottom: $grid-spacing-sm;   
+        padding-top: $grid-spacing-md;
+        padding-bottom: $grid-spacing-md;
     }
 }
 
 @mixin grid-width{
     width: 100%;
     max-width: $max-width;
-    padding: 0px 50px;
+    padding: 0px 25px;
     box-sizing: border-box;
     margin: 0px auto;
 
     @media #{$break-sm}{
-        padding: 0px 25px;
+        padding: 0px 50px;
     }
 }
