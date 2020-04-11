@@ -31,6 +31,7 @@
 
 @mixin font-text($color) {
     font-size: 20px;
+    line-height: 26px;
     opacity: 0.7;
     color: $color;
 }
