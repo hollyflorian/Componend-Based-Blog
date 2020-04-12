@@ -3,7 +3,6 @@
     $frontendFolder = $_POST["frontendfolder"];
     $innerHtml = $_POST["innerhtml"];
 
-    if(isset($innerHtml)){
         mkdir("../".$frontendFolder."/".$pagename); 
         $newFile = fopen("../".$frontendFolder."/".$pagename."/index.php", "w");
 
@@ -12,7 +11,4 @@
         fwrite($newFile, "<!-- Generated with HollyCMS 0.0.2 -->");
         fwrite($newFile, $content);
         fwrite($newFile, $innerHtml);
-
-        echo "Files Generated!";
-    }
 ?>
