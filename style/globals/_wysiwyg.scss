@@ -1,0 +1,34 @@
+@mixin wysiwyg{
+    @include font-text($white);
+
+    p{
+        margin-bottom: 20px;
+    }
+
+    em{
+        font-style: italic;
+    }
+
+    strong{
+        font-weight: 700;
+    }
+
+    ul,ol{
+        margin-left: 20px;
+
+        li{
+            &::before{
+                content: "#";
+                padding-right: 10px;
+            }
+        }
+    }
+
+    a{
+        text-decoration: underline;
+    }
+}
+
+.wysiwyg{
+    @include wysiwyg;
+}

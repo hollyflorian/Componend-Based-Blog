@@ -86,8 +86,9 @@ fetch('/cms/api/collections/get/Page?token='+token)
       }
     };
     $innerHTML = document.getElementById("output").innerHTML
-    xhttp.open("GET", "generator/GeneratePage.php?pagename="+pagename+"&frontendfolder="+frontendFolder+"&innerhtml="+$innerHTML, true);
-    xhttp.send();
+    xhttp.open("POST", "generator/GeneratePage.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("pagename="+pagename+"&frontendfolder="+frontendFolder+"&innerhtml="+$innerHTML); 
   }
 
 </script>
