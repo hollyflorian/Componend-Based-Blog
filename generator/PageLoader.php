@@ -1,3 +1,4 @@
+<script src="../libaries/handlebars-v4.7.3.js"></script>
 <script>
   // Global Variables
   var $valid = [];
@@ -18,8 +19,8 @@
   window.$LoadedPages = 0;
   function LoadAllPages(){
     // Clean up input and output File
-    document.getElementById("output").innerHTML = "";
-    document.getElementById("input").innerHTML = "";
+    window.input = "";
+    window.destination = "";
 
     // Set Pagename and Data for every Page
     if($DATA["entries"].length > window.$LoadedPages){
@@ -57,7 +58,7 @@
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("input").innerHTML = this.responseText;
+        window.input = this.responseText;
         buildTemplate($BlogData[$fieldID]["value"]);
         if(this.responseText){
           $valid[$fieldID] = true;
@@ -88,13 +89,11 @@
 
   // Get data frm handlbars Tamplate and build to innerHTML
   function buildTemplate($BlogData){
-    var source = document.getElementById("input").innerHTML;  
+    var source = window.input;  
     var template = Handlebars.compile(source);
 
     var context = $BlogData;
-    var html = template(context);
-    var destination = document.getElementById("output");
-    destination.innerHTML += html;
+    window.destination = template(context);
   }
 
   // Generate Files and Folder with Ajax
@@ -102,19 +101,13 @@
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("output").innerHTML += this.responseText;
+        window.destination += this.responseText;
         LoadAllPages();
       }
     };
-    $innerHTML = document.getElementById("output").innerHTML;
+    $innerHTML = window.destination;
     xhttp.open("POST", "generator/GeneratePage.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("pagename="+pagename+"&frontendfolder="+frontendFolder+"&innerhtml="+$innerHTML); 
   }
 </script>
-
-<!-- dynamic Strorage for Content -->
-<script id="input" type="text/x-handlebars-template"> 
-</script>
-<div id="output">
-</div>

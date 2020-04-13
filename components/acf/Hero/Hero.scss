@@ -1,9 +1,13 @@
 .Hero{
     position: relative;
-    min-height: 60vh;
+    min-height: 55vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    &--big{
+        min-height: 80vh;
+    }
 
     img{
         width: 100%;
