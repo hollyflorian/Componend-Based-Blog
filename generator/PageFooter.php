@@ -1,4 +1,4 @@
 <?php
 // LazyLoad js
-    include 'components/base/footer.php';
+    include $_SERVER["DOCUMENT_ROOT"].'/components/base/footer.php';
 ?>

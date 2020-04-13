@@ -1,6 +1,8 @@
 
 <script type="riot/tag" src="@base('collections:assets/collection-entrypreview.tag')"></script>
-
+<?php
+    include $_SERVER["DOCUMENT_ROOT"].'/generator/PageLoader.php';
+?>
 <style>
     @if(isset($collection['color']) && $collection['color'])
     .app-header { border-top: 8px {{ $collection['color'] }} solid; }
@@ -125,16 +127,14 @@
 
                 <cp-actionbar>
                     <div class="uk-container uk-container-center">
-                        <button class="uk-button uk-button-large uk-button-primary">@lang('Save')</button>
+                        <button onclick="GenerateAllPages();" class="uk-button uk-button-large uk-button-primary">@lang('Save') and Generate</button>
                         <a class="uk-button uk-button-link" href="@route('/collections/entries/'.$collection['name'])">
                             <span show="{ !entry._id }">@lang('Cancel')</span>
                             <span show="{ entry._id }">@lang('Close')</span>
                         </a>
                     </div>
                 </cp-actionbar>
-
             </form>
-
         </div>
 
         <div class="uk-grid-margin uk-width-medium-1-4  uk-width-large-1-5 uk-flex-order-first uk-flex-order-last-medium">

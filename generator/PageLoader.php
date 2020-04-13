@@ -1,31 +1,32 @@
-<script src="../libaries/handlebars-v4.7.3.js"></script>
+<script src="http://localhost/libaries/handlebars-v4.7.3.js"></script>
 <script>
-  // Global Variables
-  var $valid = [];
-  var $frontendFolder = "frontend";
-  var $BlogData;
-  var $pagename;
-  var token = 'e81f58444134a2a7e9570c2060ff64';
-  var $DATA;
+  GenerateAllPages();
+  function GenerateAllPages(){
+    // Global Variables
+    var token = 'e81f58444134a2a7e9570c2060ff64';
+    window.$frontendFolder = "frontend";
+    window.$LoadedPages = 0;
+    window.$LoadedComponents = 0;
+    window.$valid = [];
 
-  // API call
-  fetch('/cms/api/collections/get/Page?token='+token)
-  .then(res => res.json())
-  .then(res => {
-        $DATA = res;
-        LoadAllPages();
-  }); 
+    // API call
+    fetch('/cms/api/collections/get/Page?token='+token)
+    .then(res => res.json())
+    .then(res => {
+          window.$DATA = res;
+          LoadAllPages();
+    }); 
+  }
 
-  window.$LoadedPages = 0;
   function LoadAllPages(){
     // Clean up input and output File
     window.input = "";
     window.destination = "";
 
     // Set Pagename and Data for every Page
-    if($DATA["entries"].length > window.$LoadedPages){
-      $BlogData = $DATA["entries"][window.$LoadedPages]["CustomFields"];
-      $pagename = $DATA["entries"][window.$LoadedPages]["Pagename"];
+    if(window.$DATA["entries"].length > window.$LoadedPages){
+      $BlogData = window.$DATA["entries"][window.$LoadedPages]["CustomFields"];
+      window.$pagename = window.$DATA["entries"][window.$LoadedPages]["Pagename"];
       LoadComponentsRow($BlogData);
       window.$LoadedPages++;
 
@@ -36,17 +37,16 @@
   }
 
   //Load Compnents with Ajax
-  window.$LoadedComponents = 0;
   function LoadComponentsRow($BlogData){
     if($BlogData.length > window.$LoadedComponents){
-      $valid[window.$LoadedComponents] = false;
+      window.$valid[window.$LoadedComponents] = false;
       $customField = $BlogData[window.$LoadedComponents]["field"]["name"];
 
       LoadComponents(window.$LoadedComponents, $BlogData, $customField);
       window.$LoadedComponents++;
     }else{
       if(validationCheck($BlogData.length)){
-        generateFilesAndFolder($pagename, $frontendFolder);
+        generateFilesAndFolder(window.$pagename, $frontendFolder);
         window.$LoadedComponents = 0;
       }
     }
@@ -61,26 +61,26 @@
         window.input = this.responseText;
         buildTemplate($BlogData[$fieldID]["value"]);
         if(this.responseText){
-          $valid[$fieldID] = true;
+          window.$valid[$fieldID] = true;
           LoadComponentsRow($BlogData);
         }
       } 
     };
 
-    xhttp.open("GET", "generator/LoadContent.php?customfield="+$customField, true);
+    xhttp.open("GET", "http://localhost/generator/LoadContent.php?customfield="+$customField, true);
     xhttp.send();
   }
   
   // Simple Validation Check
   function validationCheck($DataLength){
-    $validCheck = true;
-    for($i in $valid){
-      if($valid[$i] !== true){
-        $validCheck = false;
+    window.$validCheck = true;
+    for($i in window.$valid){
+      if(window.$valid[$i] !== true){
+        window.$validCheck = false;
       }
     }
 
-    if($validCheck){
+    if(window.$validCheck){
       return true;
     }else{
       return false;
@@ -91,9 +91,8 @@
   function buildTemplate($BlogData){
     var source = window.input;  
     var template = Handlebars.compile(source);
-
     var context = $BlogData;
-    window.destination = template(context);
+    window.destination += template(context);
   }
 
   // Generate Files and Folder with Ajax
@@ -106,7 +105,7 @@
       }
     };
     $innerHTML = window.destination;
-    xhttp.open("POST", "generator/GeneratePage.php", true);
+    xhttp.open("POST", "http://localhost/generator/GeneratePage.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("pagename="+pagename+"&frontendfolder="+frontendFolder+"&innerhtml="+$innerHTML); 
   }

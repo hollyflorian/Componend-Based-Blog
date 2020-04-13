@@ -1,7 +1,7 @@
 <?php
     // Variables
-    $base_title = "Basic CMS 0.0.1";
+    $base_title = "Basic CMS 0.0.3";
 
     // Base Component Head
-    include '../../components/base/head.php';
+    include $_SERVER["DOCUMENT_ROOT"].'/components/base/head.php';
 ?>
