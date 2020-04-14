@@ -3,15 +3,46 @@
     @include grid-space;
     display: flex;
 
+    &__wrapper{
+        @include grid-width;
+    }
+
     &__textBox{
         width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        h3{
+            @include font-h3($white);
+        }
+
+        p{
+            @include font-text($white);
+        }
     }
 
     &__sliderBox{
-        width: 70%;  
+        width: 60%;  
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .tns-controls{
+            position: absolute;
+            top: 100%;
+            padding: 3px 2px;
+
+            button{
+                color: #FFF;
+                margin-right: 5px;
+            }
+        }
     }
 
     &__slider{
+
         img{
             width: 100%;
         }

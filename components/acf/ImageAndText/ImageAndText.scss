@@ -13,7 +13,11 @@
 
 
         &--TextForImage{
-            flex-direction: row-reverse;
+            flex-direction: column; 
+
+            @media #{$break-sm}{
+                flex-direction: row-reverse;
+            }
         }
     }
 
