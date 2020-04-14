@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/tiny-slider.css">
+<section class="Slider">
+    <div class="Slider__textBox">
+        <h3>{{ heading }}</h3>
+        <p>{{ textarea }}</p>
+    </div>
+    <div class="Slider__sliderBox">
+        <div class="Slider__slider">
+        {{#each gallery}}
+            <div><img src="{{ path }}"/></div>
+        {{/each}}
+      </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+<script type="module">
+    var slider = tns({
+      container: '.Slider__slider',
+        items: 2.5,
+        swipeAngle: false,
+        gutter: 25,
+        mouseDrag: true,
+        autoplay: true,
+    });
+</script> 

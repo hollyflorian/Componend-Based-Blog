@@ -1,0 +1,19 @@
+.Slider{
+    position: relative;
+    @include grid-space;
+    display: flex;
+
+    &__textBox{
+        width: 30%;
+    }
+
+    &__sliderBox{
+        width: 70%;  
+    }
+
+    &__slider{
+        img{
+            width: 100%;
+        }
+    }
+}
