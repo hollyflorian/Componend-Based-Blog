@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "handlebars": "^4.7.6",
-    "sass": "^1.26.3"
+    "sass": "^1.26.3",
+    "tiny-slider": "^2.9.2"
   }
 }
