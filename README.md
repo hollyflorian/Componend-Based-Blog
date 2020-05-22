@@ -1,5 +1,6 @@
 # Componend-Based-Blog
     A Component Based Blog System powerded by the Cockpit CMS
+    At the end this is just a small Test System to generate Static Sides with Handlbars and the beauty of the Cockpit CMS. 
 
 # VERSIONS
     v0.0.2: Adjust Stylings and Fix Page Generator Issues
