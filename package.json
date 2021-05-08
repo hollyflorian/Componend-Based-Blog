@@ -7,7 +7,7 @@
   "author": "florianholly <florian.holly@towa.at>",
   "license": "MIT",
   "dependencies": {
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "sass": "^1.26.3",
     "tiny-slider": "^2.9.2"
   }
